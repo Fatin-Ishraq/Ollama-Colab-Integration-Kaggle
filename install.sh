@@ -118,7 +118,6 @@ install_packages() {
 }
 
 # Function to change ownership and permissions of all files and directories
-# Function to change ownership and permissions of all files and directories
 change_file_ownership() {
     # Check if running in Jupyter environment
     if $IS_JUPYTER; then
@@ -126,7 +125,7 @@ change_file_ownership() {
         return 0
     fi
 
-    local script_dir="$(dirname "$(realpath "$0")")"
+    local script_dir="/kaggle/working/Ollama-Colab-Integration-Kaggle"
     echo "Changing ownership of all files and directories in $script_dir for Linux environment..."
 
     # Change ownership to the current user for all files and directories
@@ -138,6 +137,7 @@ change_file_ownership() {
 
     echo "Ownership and permissions changed successfully."
 }
+
 # Function to determine the operating system
 detect_os() {
     if is_jupyter; then
@@ -173,14 +173,14 @@ detect_os() {
 # Function to clone the llama.cpp repository
 clone_repository() {
     if $IS_JUPYTER; then
-        mkdir -p /kaggle/working/Ollama-Companion
-        if git clone https://github.com/ggerganov/llama.cpp.git /kaggle/working/Ollama-Colab-Integration-Kaggle/llama.cpp; then
+        mkdir -p /kaggle/working/Ollama-Colab-Integration-Kaggle
+        if git clone https://github.com/Fatin-Ishraq/Ollama-Colab-Integration-Kaggle.git /kaggle/working/Ollama-Colab-Integration-Kaggle/llama.cpp; then
             echo "Repository cloned successfully into Jupyter environment."
         else
             echo "Failed to clone repository into Jupyter environment."
             return 1
         fi
-    elif git clone https://github.com/ggerganov/llama.cpp.git; then
+    elif git clone https://github.com/Fatin-Ishraq/Ollama-Colab-Integration-Kaggle.git; then
         echo "Repository cloned successfully."
     else
         echo "Failed to clone repository."
@@ -189,7 +189,7 @@ clone_repository() {
     return 0
 }
 
-
+# Function to install Python requirements
 install_python_requirements() {
     local required_packages=("streamlit" "requests" "flask" "flask-cloudflared" "httpx" "litellm" "huggingface_hub" "asyncio" "Pyyaml" "httpx" "APScheduler" "cryptography" "pycloudflared" "numpy==1.24.4" "sentencepiece==0.1.98" "transformers>=4.34.0" "gguf>=0.1.0" "protobuf>=4.21.0" "torch==2.1.1" "transformers==4.35.2")
 
@@ -205,6 +205,8 @@ install_python_requirements() {
     echo "All required Python packages installed successfully."
     return 0
 }
+
+# Function to build llama.cpp
 build_llama_cpp() {
     if $IS_JUPYTER; then
         # Jupyter Notebook specific build steps
@@ -238,9 +240,10 @@ build_llama_cpp() {
     return 0
 }
 
+# Function to install Ollama
 install_ollama() {
     if $IS_JUPYTER; then
-        mkdir -p /kaggle/working/Ollama-Companion
+        mkdir -p /kaggle/working/Ollama-Colab-Integration-Kaggle
         curl https://ollama.ai/install.sh > /kaggle/working/Ollama-Colab-Integration-Kaggle/ollama_install.sh
         chmod +x /kaggle/working/Ollama-Colab-Integration-Kaggle/ollama_install.sh
         /kaggle/working/Ollama-Colab-Integration-Kaggle/ollama_install.sh
@@ -261,7 +264,7 @@ install_ollama() {
 
 # Function to run the key_generation script
 run_key_generation() {
-    local script_dir="$(dirname "$(realpath "$0")")"
+    local script_dir="/kaggle/working/Ollama-Colab-Integration-Kaggle"
     pushd "$script_dir" > /dev/null || return 1
     if python3 "./key_generation.py"; then
         echo "Key generation script executed successfully."
@@ -274,6 +277,7 @@ run_key_generation() {
     return 0
 }
 
+# Main function
 main() {
     local os=$(detect_os)
 
@@ -294,10 +298,10 @@ main() {
     install_python_requirements
     change_file_ownership
     install_ollama
-    # Run the key generation script with the correct path
-    run_key_generation "$(dirname "$(realpath "$0")")"
+    run_key_generation
 
     echo "Installation complete."
 }
 
+# Run main function
 main
