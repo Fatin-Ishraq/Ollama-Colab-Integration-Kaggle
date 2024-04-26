@@ -2,7 +2,7 @@
 
 # Global variable to identify if running in a Jupyter environment
 IS_JUPYTER=false
-if [ -d "/kaggle/working/Ollama-Companion/" ]; then
+if [ -d "/kaggle/working/Ollama-Colab-Integration-Kaggle/" ]; then
     IS_JUPYTER=true
 fi
 
@@ -174,7 +174,7 @@ detect_os() {
 clone_repository() {
     if $IS_JUPYTER; then
         mkdir -p /kaggle/working/Ollama-Companion
-        if git clone https://github.com/ggerganov/llama.cpp.git /kaggle/working/Ollama-Companion/llama.cpp; then
+        if git clone https://github.com/ggerganov/llama.cpp.git /kaggle/working/Ollama-Colab-Integration-Kaggle/llama.cpp; then
             echo "Repository cloned successfully into Jupyter environment."
         else
             echo "Failed to clone repository into Jupyter environment."
@@ -208,15 +208,15 @@ install_python_requirements() {
 build_llama_cpp() {
     if $IS_JUPYTER; then
         # Jupyter Notebook specific build steps
-        if [ -d "/kaggle/working/Ollama-Companion/llama.cpp" ]; then
-            if make -C /kaggle/working/Ollama-Companion/llama.cpp; then
+        if [ -d "/kaggle/working/Ollama-Colab-Integration-Kaggle/llama.cpp" ]; then
+            if make -C /kaggle/working/Ollama-Colab-Integration-Kaggle/llama.cpp; then
                 echo "llama.cpp built successfully in Jupyter Notebook environment."
             else
                 echo "Failed to build llama.cpp in Jupyter Notebook environment."
                 return 1
             fi
         else
-            echo "/kaggle/working/Ollama-Companion/llama.cpp directory not found."
+            echo "/kaggle/working/Ollama-Colab-Integration-Kaggle/llama.cpp directory not found."
             return 1
         fi
     else
@@ -241,9 +241,9 @@ build_llama_cpp() {
 install_ollama() {
     if $IS_JUPYTER; then
         mkdir -p /kaggle/working/Ollama-Companion
-        curl https://ollama.ai/install.sh > /kaggle/working/Ollama-Companion/ollama_install.sh
-        chmod +x /kaggle/working/Ollama-Companion/ollama_install.sh
-        /kaggle/working/Ollama-Companion/ollama_install.sh
+        curl https://ollama.ai/install.sh > /kaggle/working/Ollama-Colab-Integration-Kaggle/ollama_install.sh
+        chmod +x /kaggle/working/Ollama-Colab-Integration-Kaggle/ollama_install.sh
+        /kaggle/working/Ollama-Colab-Integration-Kaggle/ollama_install.sh
         echo "Ollama installed in Jupyter environment."
     else
         read -p "Do you want to install Ollama on this host? (y/n) " answer
