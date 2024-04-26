@@ -16,7 +16,7 @@ def start_tunnel():
 
 def run_streamlit():
     print("Starting Streamlit App...")
-    subprocess.call(['streamlit', 'run', '/kaggle/working/Ollama-Companion/main.py'])
+    subprocess.call(['streamlit', 'run', '/kaggle/working/Ollama-Colab-Integration-Kaggle/main.py'])
 
 def main():
     tunnel_thread = threading.Thread(target=start_tunnel)
